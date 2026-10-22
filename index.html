@@ -76,7 +76,7 @@ const LEVELS=[
 .......................................................................o.....==========........
 .........o.o.o...............o.o................e...e............................o.o.o..o......
 ........=======....e........=====........================.....e.........................====...
-.P....................................................................e........e............F..
+.P......................................=.............................e........e............F..
 ##############....##################....##########....##########################...###########.
 ##############....##################....##########....##########################...###########.`,
 `..............................................................................................
@@ -135,8 +135,9 @@ function fit(){
 }
 addEventListener('resize',fit);
 function text(s,x,y,sc,col,align,glow){
-  const k=scale*DPR, px = sc>=4?30:sc>=3?20:sc>=2?13:7;
-  tctx.font=(sc>=2?'400 ':'700 ')+(px*k)+'px '+(sc>=2?'Anton':'"Barlow Semi Condensed"')+', Impact, "Arial Narrow", sans-serif';
+  const k=scale*DPR; let px = sc>=4?30:sc>=3?20:sc>=2?13:7;
+  const fontOf=p=>(sc>=2?'400 ':'700 ')+(p*k)+'px '+(sc>=2?'Anton':'"Barlow Semi Condensed"')+', Impact, "Arial Narrow", sans-serif';
+  tctx.font=fontOf(px); const maxW=(W-8)*k; if(tctx.measureText(String(s)).width>maxW){ px=Math.max(5,Math.floor(px*maxW/tctx.measureText(String(s)).width)); tctx.font=fontOf(px); }
   tctx.textAlign=align==='c'?'center':align==='r'?'right':'left'; tctx.textBaseline='top';
   if(sc<2) s=String(s).toUpperCase();
   tctx.shadowColor=col; tctx.shadowBlur=(glow==null?(sc>=2?8:2):glow)*k; tctx.fillStyle=col; tctx.fillText(String(s),x*k,(y-(sc>=2?1:0.5))*k); tctx.shadowBlur=0;
